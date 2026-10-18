@@ -34,13 +34,16 @@ P : (E → ℝ) → WeakDual ℝ E that agrees with the identity on "good paths"
 - Gel'fand-Vilenkin, "Generalized Functions" Vol. 4, Ch. IV, §3.3
 - Minlos, "Generalized random processes and their extension to measures" (1959)
 -/
+module
 
-import Minlos.ProjectiveFamily
-import Minlos.MinlosConcentration
-import Mathlib.Topology.Bases
-import Mathlib.Topology.ExtendFrom
-import Mathlib.Data.Finsupp.Basic
-import Mathlib.Data.Finsupp.Encodable
+public import Minlos.ProjectiveFamily
+public import Minlos.MinlosConcentration
+public import Mathlib.Topology.Bases
+public import Mathlib.Topology.ExtendFrom
+public import Mathlib.Data.Finsupp.Basic
+public import Mathlib.Data.Finsupp.Encodable
+
+@[expose] public section
 
 open BigOperators MeasureTheory Complex TopologicalSpace Classical Finsupp
 
@@ -484,10 +487,10 @@ noncomputable def extensionCLM [SeparableSpace E] [IsHilbertNuclear E] [Nonempty
     (ω : E → ℝ) (hω : ω ∈ goodPaths d p) :
     WeakDual ℝ E :=
   ⟨{ toFun := extensionFun d hd p ω hω
-     map_add' := extensionFun_map_add d hd p hp_top ω hω
+     map_add' := by exact extensionFun_map_add d hd p hp_top ω hω
      map_smul' := fun r x => by
        simp [extensionFun_map_smul d hd p hp_top ω hω r x, smul_eq_mul] },
-   extensionFun_continuous d hd p hp_top ω hω⟩
+   by exact extensionFun_continuous d hd p hp_top ω hω⟩
 
 /-- The extension agrees with ω on the dense sequence.
     Follows from the BLT construction: Dense.extend agrees with ω on range(d).

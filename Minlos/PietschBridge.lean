@@ -26,9 +26,12 @@ expansion `p(x) ≤ Σₖ |fₖ(x)| · cₖ` with `|fₖ| ≤ q`), we:
 - Pietsch, "Nuclear Locally Convex Spaces" (1972), §4
 - Trèves, "Topological Vector Spaces", Ch. 50-51
 -/
+module
 
-import Minlos.NuclearSpace
-import Mathlib.Topology.Instances.RealVectorSpace
+public import Minlos.NuclearSpace
+public import Mathlib.Topology.Instances.RealVectorSpace
+
+@[expose] public section
 
 open scoped BigOperators
 

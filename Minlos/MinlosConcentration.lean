@@ -31,11 +31,14 @@ nuclear cylindrical measures. `minlos_concentration` is a convenience wrapper.
 - Bogachev, "Gaussian Measures", Ch. 2-3
 - Trèves, "Topological Vector Spaces", Ch. 50-51
 -/
+module
 
-import Minlos.SazonovTightness
-import Minlos.NuclearSpace
-import Minlos.PietschBridge
-import Mathlib.Data.Finsupp.Encodable
+public import Minlos.SazonovTightness
+public import Minlos.NuclearSpace
+public import Minlos.PietschBridge
+public import Mathlib.Data.Finsupp.Encodable
+
+@[expose] public section
 
 open BigOperators MeasureTheory Complex TopologicalSpace Classical Finsupp
 

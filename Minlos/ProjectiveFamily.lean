@@ -13,9 +13,12 @@ by `Finset E`), enabling application of the Kolmogorov extension theorem.
 - `marginalFamily` — for each `J : Finset E`, a probability measure on `∀ j : J, ℝ`
 - `marginalFamily_isProjective` — the family is projective (consistent under restriction)
 -/
+module
 
-import Minlos.FinDimMarginals
-import KolmogorovExtension4.KolmogorovExtension
+public import Minlos.FinDimMarginals
+public import KolmogorovExtension4.KolmogorovExtension
+
+@[expose] public section
 
 open BigOperators MeasureTheory Complex Classical
 

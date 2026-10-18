@@ -13,11 +13,14 @@ via Hilbert-Schmidt embeddings. Adapted from OSforGFF/IsHilbertNuclear.lean.
 - Gel'fand-Vilenkin, "Generalized Functions" Vol. 4, Ch. 3-4
 - Reed-Simon, "Methods of Modern Mathematical Physics" Vol. 1, §V.3
 -/
+module
 
-import Mathlib.Analysis.LocallyConvex.WithSeminorms
-import Mathlib.Topology.Algebra.Module.Spaces.WeakDual
-import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
-import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
+public import Mathlib.Analysis.LocallyConvex.WithSeminorms
+public import Mathlib.Topology.Algebra.Module.Spaces.WeakDual
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+public import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
+
+@[expose] public section
 
 open scoped BigOperators
 
