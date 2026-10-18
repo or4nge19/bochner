@@ -161,14 +161,14 @@ private lemma extensionFun_eq (d : ℕ → E) (hd : DenseRange d)
     extensionFun d hd p ω hω (d n) = ω (d n) := by
   have h_cwat : ContinuousWithinAt ω (Set.range d) (d n) := by
     obtain ⟨hql, hbd⟩ := hω
-    simp only [boundedPaths, Set.mem_iUnion, Set.mem_iInter, Set.mem_setOf_eq] at hbd
+    simp only [boundedPaths, Set.mem_iUnion, Set.mem_iInter, Set.mem_ofPred_eq] at hbd
     obtain ⟨s, C, hC⟩ := hbd
     -- Key bound: |ω(d m) - ω(d n)| ≤ C * (s.sup p)(d m - d n)
     have h_bound : ∀ m : ℕ, |ω (d m) - ω (d n)| ≤ (C : ℝ) * (s.sup p) (d m - d n) := by
       intro m
       let c : ℕ →₀ ℚ := Finsupp.single m 1 + Finsupp.single n (-1)
       have hql_c := (Set.mem_iInter.mp hql) c
-      simp only [Set.mem_setOf_eq] at hql_c
+      simp only [Set.mem_ofPred_eq] at hql_c
       have hbd_c := hC c
       have h1 : c.sum (fun i a => (a : ℝ) • d i) = d m - d n := by
         show (Finsupp.single m (1 : ℚ) + Finsupp.single n ((-1) : ℚ)).sum _ = _
@@ -196,10 +196,10 @@ private lemma extensionFun_eq (d : ℕ → E) (hd : DenseRange d)
       exact continuous_finsetSum _ (fun i _ => hp_top.continuous_seminorm i)
     refine ⟨{x | (s.sup p) (x - d n) < ε / ((C : ℝ) + 1)},
       isOpen_lt (h_cont_sp.comp (continuous_sub_right _)) continuous_const,
-      by simp only [Set.mem_setOf_eq, sub_self, map_zero]; exact div_pos hε hCε, ?_⟩
+      by simp only [Set.mem_ofPred_eq, sub_self, map_zero]; exact div_pos hε hCε, ?_⟩
     intro x ⟨hx_U, hx_range⟩
     obtain ⟨m, rfl⟩ := hx_range
-    simp only [Set.mem_setOf_eq, Real.dist_eq] at hx_U ⊢
+    simp only [Set.mem_ofPred_eq, Real.dist_eq] at hx_U ⊢
     calc |ω (d m) - ω (d n)|
         ≤ (↑C : ℝ) * (s.sup p) (d m - d n) := h_bound m
       _ ≤ (↑C + 1) * (s.sup p) (d m - d n) := by
@@ -218,13 +218,13 @@ private lemma extensionFun_continuous (d : ℕ → E) (hd : DenseRange d)
   apply continuous_extendFrom (show Dense (Set.range d) from hd)
   intro x
   obtain ⟨hql, hbd⟩ := hω
-  simp only [boundedPaths, Set.mem_iUnion, Set.mem_iInter, Set.mem_setOf_eq] at hbd
+  simp only [boundedPaths, Set.mem_iUnion, Set.mem_iInter, Set.mem_ofPred_eq] at hbd
   obtain ⟨s, C, hC⟩ := hbd
   have h_bound : ∀ m n : ℕ, |ω (d m) - ω (d n)| ≤ (C : ℝ) * (s.sup p) (d m - d n) := by
     intro m n
     let c : ℕ →₀ ℚ := Finsupp.single m 1 + Finsupp.single n (-1)
     have hql_c := (Set.mem_iInter.mp hql) c
-    simp only [Set.mem_setOf_eq] at hql_c
+    simp only [Set.mem_ofPred_eq] at hql_c
     have hbd_c := hC c
     have h1 : c.sum (fun i a => (a : ℝ) • d i) = d m - d n := by
       show (Finsupp.single m (1 : ℚ) + Finsupp.single n ((-1) : ℚ)).sum _ = _
@@ -296,7 +296,7 @@ private lemma extensionFun_map_add (d : ℕ → E) (hd : DenseRange d)
   have hg_eq : ∀ n, g (d n) = ω (d n) := fun n => extensionFun_eq d hd p hp_top ω hω n
   have hql := hω.1
   have hbd : ω ∈ boundedPaths d p := hω.2
-  simp only [boundedPaths, Set.mem_iUnion, Set.mem_iInter, Set.mem_setOf_eq] at hbd
+  simp only [boundedPaths, Set.mem_iUnion, Set.mem_iInter, Set.mem_ofPred_eq] at hbd
   obtain ⟨s, C, hC⟩ := hbd
   have h_cont_sp : Continuous (fun x : E => (s.sup p) x) := by
     refine Seminorm.continuous_of_le ?_ (Seminorm.finset_sup_le_sum p s)
@@ -309,7 +309,7 @@ private lemma extensionFun_map_add (d : ℕ → E) (hd : DenseRange d)
     -- ℚ-linearity: ω(d m + d n) = ω(d m) + ω(d n)
     let c : ℕ →₀ ℚ := Finsupp.single m 1 + Finsupp.single n 1
     have hql_c := (Set.mem_iInter.mp hql) c
-    simp only [Set.mem_setOf_eq] at hql_c
+    simp only [Set.mem_ofPred_eq] at hql_c
     have h1 : c.sum (fun i a => (a : ℝ) • d i) = d m + d n := by
       show (Finsupp.single m (1 : ℚ) + Finsupp.single n (1 : ℚ)).sum _ = _
       rw [Finsupp.sum_add_index (fun i => by simp) (fun i => by simp [add_smul]),
@@ -334,11 +334,11 @@ private lemma extensionFun_map_add (d : ℕ → E) (hd : DenseRange d)
         by simp [sub_self, map_zero, div_pos hε hCε], ?_⟩
       intro z ⟨hz_U, hz_range⟩
       obtain ⟨k, rfl⟩ := hz_range
-      simp only [Set.mem_setOf_eq, Real.dist_eq] at hz_U ⊢
+      simp only [Set.mem_ofPred_eq, Real.dist_eq] at hz_U ⊢
       -- |ω(d k) - ω(d m + d n)| via Finsupp single k 1 + single m (-1) + single n (-1)
       let c' : ℕ →₀ ℚ := Finsupp.single k 1 + Finsupp.single m (-1) + Finsupp.single n (-1)
       have hql_c' := (Set.mem_iInter.mp hql) c'
-      simp only [Set.mem_setOf_eq] at hql_c'
+      simp only [Set.mem_ofPred_eq] at hql_c'
       have hbd_c' := hC c'
       have h1' : c'.sum (fun i a => (a : ℝ) • d i) = d k - (d m + d n) := by
         show (Finsupp.single k (1 : ℚ) + Finsupp.single m (-1 : ℚ) +
@@ -394,7 +394,7 @@ private lemma extensionFun_map_smul (d : ℕ → E) (hd : DenseRange d)
   have hg_eq : ∀ n, g (d n) = ω (d n) := fun n => extensionFun_eq d hd p hp_top ω hω n
   have hql := hω.1
   have hbd : ω ∈ boundedPaths d p := hω.2
-  simp only [boundedPaths, Set.mem_iUnion, Set.mem_iInter, Set.mem_setOf_eq] at hbd
+  simp only [boundedPaths, Set.mem_iUnion, Set.mem_iInter, Set.mem_ofPred_eq] at hbd
   obtain ⟨s, C, hC⟩ := hbd
   -- Step 1: g(q • d n) = q * g(d n) for q : ℚ (from ℚ-linearity)
   have hg_rat_smul : ∀ (q : ℚ) (n : ℕ), g ((q : ℝ) • d n) = (q : ℝ) * g (d n) := by
@@ -402,7 +402,7 @@ private lemma extensionFun_map_smul (d : ℕ → E) (hd : DenseRange d)
     -- ℚ-linearity gives ω(q • d n) = q * ω(d n)
     let c : ℕ →₀ ℚ := Finsupp.single n q
     have hql_c := (Set.mem_iInter.mp hql) c
-    simp only [Set.mem_setOf_eq] at hql_c
+    simp only [Set.mem_ofPred_eq] at hql_c
     have h1 : c.sum (fun i a => (a : ℝ) • d i) = (q : ℝ) • d n := by
       show (Finsupp.single n q).sum _ = _
       rw [Finsupp.sum_single_index (by simp)]
@@ -431,11 +431,11 @@ private lemma extensionFun_map_smul (d : ℕ → E) (hd : DenseRange d)
         by simp [sub_self, map_zero, div_pos hε hCε], ?_⟩
       intro x ⟨hx_U, hx_range⟩
       obtain ⟨m, rfl⟩ := hx_range
-      simp only [Set.mem_setOf_eq, Real.dist_eq] at hx_U ⊢
+      simp only [Set.mem_ofPred_eq, Real.dist_eq] at hx_U ⊢
       -- Bound |ω(d m) - ω(q • d n)| using Finsupp single m 1 + single n (-q)
       let c' : ℕ →₀ ℚ := Finsupp.single m 1 + Finsupp.single n (-q)
       have hql_c' := (Set.mem_iInter.mp hql) c'
-      simp only [Set.mem_setOf_eq] at hql_c'
+      simp only [Set.mem_ofPred_eq] at hql_c'
       have hbd_c' := hC c'
       have h1' : c'.sum (fun i a => (a : ℝ) • d i) = d m - (q : ℝ) • d n := by
         show (Finsupp.single m (1 : ℚ) + Finsupp.single n (-q)).sum _ = _
@@ -510,13 +510,13 @@ lemma embed_mem_goodPaths [SeparableSpace E] [IsHilbertNuclear E] [Nonempty E]
     weakDualEmbed E l ∈ goodPaths d p := by
   constructor
   · -- ℚ-linearity: l is ℝ-linear, so l(∑ cᵢ • d(i)) = ∑ cᵢ * l(d(i))
-    simp only [qLinearPaths, Set.mem_iInter, Set.mem_setOf_eq]
+    simp only [qLinearPaths, Set.mem_iInter, Set.mem_ofPred_eq]
     intro c
     simp only [weakDualEmbed, Finsupp.sum]
     rw [map_sum]
     simp_rw [map_smul, smul_eq_mul]
   · -- Boundedness: l is continuous, hence bounded by finitely many p_n
-    simp only [boundedPaths, Set.mem_iUnion, Set.mem_iInter, Set.mem_setOf_eq]
+    simp only [boundedPaths, Set.mem_iUnion, Set.mem_iInter, Set.mem_ofPred_eq]
     -- View |l(·)| as a continuous seminorm and apply bound_of_continuous
     have hl_cont : Continuous ((normSeminorm ℝ ℝ).comp l.toLinearMap) := by
       show Continuous (fun x => ‖l x‖)
@@ -618,12 +618,12 @@ private lemma measurable_eval_comp_projection
       (nhds ((measurableProjectionAux d (denseRange_denseSeq E) p hp_top ω : E →L[ℝ] ℝ) f))
     by_cases hω : ω ∈ gP
     · -- On good paths: F_k(ω) = ω(d(φ(k))) → extensionFun(f) = P(ω)(f)
-      simp only [F, if_pos hω]
+      simp only [F, ite_eq_left hω]
       -- Unfold measurableProjectionAux using dif_pos
       have h_unfold : (measurableProjectionAux d (denseRange_denseSeq E) p hp_top ω
           : E →L[ℝ] ℝ) f = extensionFun d (denseRange_denseSeq E) p ω hω f := by
         unfold measurableProjectionAux
-        rw [dif_pos hω]
+        rw [dite_eq_left hω]
         rfl
       rw [h_unfold]
       have hcont := extensionFun_continuous d (denseRange_denseSeq E) p hp_top ω hω
@@ -633,11 +633,11 @@ private lemma measurable_eval_comp_projection
       ext k
       exact (extensionFun_eq d (denseRange_denseSeq E) p hp_top ω hω (φ k)).symm
     · -- On bad paths: F_k(ω) = 0 → 0 = P(ω)(f)
-      simp only [F, if_neg hω]
+      simp only [F, ite_eq_right hω]
       have h_unfold : (measurableProjectionAux d (denseRange_denseSeq E) p hp_top ω
           : E →L[ℝ] ℝ) f = 0 := by
         unfold measurableProjectionAux
-        rw [dif_neg hω]
+        rw [dite_eq_right hω]
         rfl
       rw [h_unfold]
       exact tendsto_const_nhds
@@ -681,7 +681,7 @@ lemma projection_embed_eq [SeparableSpace E] [IsHilbertNuclear E] [Nonempty E] :
   have h_mem := embed_mem_goodPaths (denseSeq E)
     (IsHilbertNuclear.nuclear_hilbert_embeddings (E := E)).choose hp_top l
   -- dite picks the "if" branch
-  simp only [measurableProjectionAux, dif_pos h_mem]
+  simp only [measurableProjectionAux, dite_eq_left h_mem]
   -- extensionCLM recovers l
   exact extensionCLM_embed (denseSeq E) (denseRange_denseSeq E)
     (IsHilbertNuclear.nuclear_hilbert_embeddings (E := E)).choose hp_top l
@@ -716,7 +716,7 @@ theorem qLinearPaths_ae [SeparableSpace E] [IsHilbertNuclear E] [Nonempty E]
     ∀ᵐ ω ∂ν, ω ∈ qLinearPaths (denseSeq E) := by
   -- For each c : ℕ →₀ ℚ, X(ω) = ω(∑ cᵢ•dᵢ) - ∑ cᵢ*ω(dᵢ) has CF = 1,
   -- hence X = 0 a.s. Countable intersection over ℕ →₀ ℚ.
-  simp only [qLinearPaths, Set.mem_iInter, Set.mem_setOf_eq]
+  simp only [qLinearPaths, Set.mem_iInter, Set.mem_ofPred_eq]
   rw [ae_all_iff]
   intro c
   set d := denseSeq E
@@ -812,7 +812,7 @@ private lemma boundedPaths_tail_bound [SeparableSpace E] [IsHilbertNuclear E] [N
   apply lt_of_le_of_lt _ hC
   apply measure_mono
   intro ω hω
-  simp only [Set.mem_setOf_eq] at hω ⊢
+  simp only [Set.mem_ofPred_eq] at hω ⊢
   obtain ⟨c, hc⟩ := hω
   refine ⟨c, fun h_le => hc ?_⟩
   set x := c.sum fun i a => (a : ℝ) • d i
@@ -866,7 +866,7 @@ theorem boundedPaths_ae [SeparableSpace E] [IsHilbertNuclear E] [Nonempty E]
         ¬ (|ω (c.sum fun i a => (a : ℝ) • d i)| ≤
           (C : ℝ) * (s.sup p) (c.sum fun i a => (a : ℝ) • d i))} := by
     intro ω hω
-    simp only [Set.mem_setOf_eq, boundedPaths, Set.mem_iUnion, Set.mem_iInter] at hω ⊢
+    simp only [Set.mem_ofPred_eq, boundedPaths, Set.mem_iUnion, Set.mem_iInter] at hω ⊢
     push Not at hω ⊢
     exact hω s C
   have h_lt := lt_of_le_of_lt (measure_mono h_subset) hC
@@ -956,7 +956,7 @@ theorem projection_ae_eq [SeparableSpace E] [IsHilbertNuclear E] [Nonempty E]
       intro k
       show (measurableProjectionAux d (denseRange_denseSeq E) p hp_top ω : E →L[ℝ] ℝ) (d (φ k)) =
         ω (d (φ k))
-      simp only [measurableProjectionAux, dif_pos h_mem]
+      simp only [measurableProjectionAux, dite_eq_left h_mem]
       exact extensionCLM_eq_on_dense d (denseRange_denseSeq E) p hp_top ω h_mem (φ k)
     have h_Pω_cont : Continuous (measurableProjection ω : E →L[ℝ] ℝ) :=
       (measurableProjection ω : E →L[ℝ] ℝ).cont

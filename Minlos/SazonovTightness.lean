@@ -118,7 +118,7 @@ lemma tail_bound_from_exp_integral {V : Type*} [NormedAddCommGroup V]
     rw [Real.exp_zero] at this; linarith
   have hf_ge_δ : ∀ y ∈ A, δ ≤ f y := by
     intro y hy
-    simp only [A, mem_setOf_eq] at hy; simp only [f, hδ_def]
+    simp only [A, mem_ofPred_eq] at hy; simp only [f, hδ_def]
     have : σ ^ 2 * R ^ 2 / 2 ≤ σ ^ 2 * ‖y‖ ^ 2 / 2 := by
       apply div_le_div_of_nonneg_right _ (by positivity : (0:ℝ) ≤ 2)
       exact mul_le_mul_of_nonneg_left (sq_le_sq' (by linarith) hy) (by positivity)
