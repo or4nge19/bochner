@@ -655,16 +655,13 @@ private lemma measurable_eval_comp_projection
 theorem measurable_measurableProjection [SeparableSpace E] [IsHilbertNuclear E] [Nonempty E] :
     Measurable (measurableProjection (E := E)) := by
   -- Measurable means: comap P (cylinder σ-algebra) ≤ MeasurableSpace.pi
-  -- Cylinder = ⨆_f comap eval_f (borel ℝ)
-  -- comap P (⨆_f comap eval_f) = ⨆_f comap (eval_f ∘ P) (by comap_iSup)
-  -- Each eval_f ∘ P is pi-measurable (measurable_eval_comp_projection).
+  -- Cylinder = comap (l ↦ (f ↦ l f)) pi, so comap P cylinder = comap (f ↦ l f ∘ P) pi
+  -- and it suffices that each eval_f ∘ P is pi-measurable (measurable_eval_comp_projection).
   rw [measurable_iff_comap_le]
-  show (⨆ (f : E), (borel ℝ).comap (fun l : WeakDual ℝ E =>
-    (l : E →L[ℝ] ℝ) f)).comap measurableProjection ≤ MeasurableSpace.pi
-  rw [MeasurableSpace.comap_iSup]
-  exact iSup_le fun f => by
-    rw [MeasurableSpace.comap_comp]
-    exact (measurable_eval_comp_projection f).comap_le
+  change (MeasurableSpace.comap (fun (ω : WeakDual ℝ E) (f : E) => ω f)
+    MeasurableSpace.pi).comap measurableProjection ≤ MeasurableSpace.pi
+  rw [MeasurableSpace.comap_comp]
+  exact (Measurable.of_eval fun f => measurable_eval_comp_projection f).comap_le
 
 /-- The projection composed with the embedding is the identity on WeakDual ℝ E.
     For l ∈ WeakDual ℝ E, embed(l) ∈ goodPaths (l is linear + bounded), and
